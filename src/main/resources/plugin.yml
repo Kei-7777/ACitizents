@@ -1,0 +1,7 @@
+name: AutomatonCitizens
+version: @version@
+main: me.kei.citizens.automaton.AutomatonCitizens
+api-version: 1.15
+loadbefore: [Citizens]
+depend: [Citizens]
+authors: [Kei]
