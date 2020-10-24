@@ -1,5 +1,6 @@
 package me.kei.citizens.automaton.tasks.turret;
 
+import me.kei.citizens.automaton.LocationUtils;
 import me.kei.citizens.automaton.tasks.Turret;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.trait.trait.Equipment;
@@ -17,7 +18,7 @@ import java.util.List;
 public class AttackEnemy extends Turret {
 
     double range = 10;
-    double damage = 3.5;
+    double damage = 7.5;
     List<EntityType> enemy =
             Arrays.asList(
                     EntityType.ZOMBIE,
@@ -53,8 +54,12 @@ public class AttackEnemy extends Turret {
         if(target == null) return;
         else {
             target.getLocation().getWorld().spawnParticle(Particle.DAMAGE_INDICATOR, target.getLocation(), 10);
-            target.getLocation().getWorld().playSound(target.getLocation(), Sound.ENTITY_ITEM_BREAK, 1f, 1f);
+            target.getLocation().getWorld().playSound(target.getLocation(), Sound.ENTITY_BLAZE_HURT, .1f, .1f);
             target.damage(damage);
+            npc.faceLocation(target.getLocation());
+            for(Location l : LocationUtils.getLocationsOnLine(npc.getEntity().getLocation().add(0,2,0), target.getLocation().add(0,2,0), 0.2)){
+                l.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, l, 1);
+            }
             npc.data().set("state", 1);
         }
 

@@ -21,6 +21,7 @@ public class NPCRemoveListener implements Listener {
     @EventHandler
     public void onClick(PlayerInteractAtEntityEvent e) {
         if (e.getPlayer().getInventory().getItemInMainHand().getType() == Material.STICK) {
+            if(!CitizensAPI.getNPCRegistry().isNPC(e.getRightClicked())) return;
             for (Iterator i = CitizensAPI.getNPCRegistry().iterator(); i.hasNext(); ) {
                 NPC npc = (NPC) i.next();
                 if (npc.getEntity().getUniqueId().toString().equalsIgnoreCase(e.getRightClicked().getUniqueId().toString())) {
@@ -28,15 +29,23 @@ public class NPCRemoveListener implements Listener {
                         if (npc.data().get("npctype").equals(AutomatonNPC.COBBLEMINER.id)) {
                             npc.getStoredLocation().getWorld().dropItemNaturally(npc.getEntity().getLocation().clone().add(0,0,0), AutomatonItemFactory.cobbleminer_npc_egg);
                             npc.destroy();
+                            return;
                         } else if (npc.data().get("npctype").equals(AutomatonNPC.TRANSPORT.id)) {
                             npc.getStoredLocation().getWorld().dropItemNaturally(npc.getEntity().getLocation().clone().add(0,0,0), AutomatonItemFactory.transport_npc_egg);
                             npc.destroy();
+                            return;
                         } else if (npc.data().get("npctype").equals(AutomatonNPC.SIEVE.id)) {
                             npc.getStoredLocation().getWorld().dropItemNaturally(npc.getEntity().getLocation().clone().add(0,0,0), AutomatonItemFactory.sieve_npc_egg);
                             npc.destroy();
+                            return;
                         } else if (npc.data().get("npctype").equals(AutomatonNPC.GRINDER.id)) {
                             npc.getStoredLocation().getWorld().dropItemNaturally(npc.getEntity().getLocation().clone().add(0,0,0), AutomatonItemFactory.grinder_npc_egg);
                             npc.destroy();
+                            return;
+                        } else if (npc.data().get("npctype").equals(AutomatonNPC.TURRET.id)) {
+                            npc.getStoredLocation().getWorld().dropItemNaturally(npc.getEntity().getLocation().clone().add(0,0,0), AutomatonItemFactory.turret_npc_egg);
+                            npc.destroy();
+                            return;
                         }
                     }
                 }

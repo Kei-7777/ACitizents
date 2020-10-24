@@ -39,9 +39,7 @@ public class FindNearEnemy extends Turret {
                 if (target == null) target = livingEntity;
                 if (base.distance(livingEntity.getLocation()) < base.distance(target.getLocation())) {
                     target = livingEntity;
-                    npc.getNavigator().setPaused(false);
-                    npc.getNavigator().setTarget(target.getLocation());
-                    npc.getNavigator().setPaused(true);
+                    npc.faceLocation(target.getLocation());
                 }
             }
         }
