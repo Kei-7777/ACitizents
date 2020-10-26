@@ -46,6 +46,10 @@ public class NPCRemoveListener implements Listener {
                             npc.getStoredLocation().getWorld().dropItemNaturally(npc.getEntity().getLocation().clone().add(0,0,0), AutomatonItemFactory.turret_npc_egg);
                             npc.destroy();
                             return;
+                        } else if (npc.data().get("npctype").equals(AutomatonNPC.TREEGEN.id)) {
+                            npc.getStoredLocation().getWorld().dropItemNaturally(npc.getEntity().getLocation().clone().add(0,0,0), AutomatonItemFactory.tree_npc_egg);
+                            npc.destroy();
+                            return;
                         }
                     }
                 }

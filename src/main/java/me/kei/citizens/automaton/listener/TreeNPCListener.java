@@ -5,13 +5,19 @@ import me.kei.citizens.automaton.item.AutomatonItemFactory;
 import me.kei.citizens.automaton.npc.AutomatonNPC;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.block.Dropper;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class TreeNPCListener implements Listener {
@@ -19,6 +25,14 @@ public class TreeNPCListener implements Listener {
     public TreeNPCListener(AutomatonCitizens automatonCitizens) {
         this.plugin = automatonCitizens;
     }
+
+    public static String title = ChatColor.RESET + "木材生産機 ";
+    public static String oak = "オーク";
+    public static String spruce = "松";
+    public static String birch = "白樺";
+    public static String jungle = "ジャングル";
+    public static String acacia = "アカシア";
+    public static String darkoak = "ダークオーク";
 
     @EventHandler
     public void onEggClicked(PlayerInteractEvent e) {
@@ -35,10 +49,74 @@ public class TreeNPCListener implements Listener {
                     npc.data().set("base_z", e.getClickedBlock().getLocation().getZ() + .5);
                     skin(npc, p.getName());
                     npc.spawn(e.getClickedBlock().getLocation().add(0.5, 1.5, 0.5));
+                } else if(e.getClickedBlock() != null && e.getClickedBlock().getType() == Material.DROPPER){
+                    if(e.getItem() == null) return;
+                    ItemStack item = e.getItem();
+                    if(item.getType() == Material.OAK_SAPLING) {
+                        Dropper dropper = (Dropper) e.getClickedBlock().getState();
+                        if(dropper.getCustomName() != null && dropper.getCustomName().startsWith(title)){
+                            dropper.setCustomName(title + oak);
+                            dropper.update();
+                        }
+                    } else if(item.getType() == Material.SPRUCE_SAPLING) {
+                        Dropper dropper = (Dropper) e.getClickedBlock().getState();
+                        if(dropper.getCustomName() != null && dropper.getCustomName().startsWith(title)){
+                            dropper.setCustomName(title + spruce);
+                            dropper.update();
+                        }
+                    } else if(item.getType() == Material.ACACIA_SAPLING) {
+                        Dropper dropper = (Dropper) e.getClickedBlock().getState();
+                        if(dropper.getCustomName() != null && dropper.getCustomName().startsWith(title)){
+                            dropper.setCustomName(title + acacia);
+                            dropper.update();
+                        }
+                    } else if(item.getType() == Material.BIRCH_SAPLING) {
+                        Dropper dropper = (Dropper) e.getClickedBlock().getState();
+                        if(dropper.getCustomName() != null && dropper.getCustomName().startsWith(title)){
+                            dropper.setCustomName(title + birch);
+                            dropper.update();
+                        }
+                    } else if(item.getType() == Material.JUNGLE_SAPLING) {
+                        Dropper dropper = (Dropper) e.getClickedBlock().getState();
+                        if(dropper.getCustomName() != null && dropper.getCustomName().startsWith(title)){
+                            dropper.setCustomName(title + jungle);
+                            dropper.update();
+                        }
+                    } else if(item.getType() == Material.DARK_OAK_SAPLING) {
+                        Dropper dropper = (Dropper) e.getClickedBlock().getState();
+                        if(dropper.getCustomName() != null && dropper.getCustomName().startsWith(title)){
+                            dropper.setCustomName(title + darkoak);
+                            dropper.update();
+                        }
+                    }
                 }
             }
         } catch (NullPointerException ex){
             // threw
+        }
+    }
+
+    @EventHandler
+    public void onClick(InventoryClickEvent e){
+        if(e.getClickedInventory() == null) return;
+        if(e.getView().getTitle().startsWith(title)){
+            e.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onBreak(BlockBreakEvent e){
+        if(e.getBlock().getType() == Material.DROPPER){
+            Dropper dropper = (Dropper) e.getBlock().getState();
+            try {
+                if (dropper.getCustomName().startsWith(title)) {
+                    dropper.getInventory().clear();
+                    e.setDropItems(false);
+                    e.getBlock().getLocation().getWorld().dropItemNaturally(e.getBlock().getLocation(), new ItemStack(Material.DROPPER));
+                }
+            } catch (NullPointerException ex){
+                //threw
+            }
         }
     }
 
