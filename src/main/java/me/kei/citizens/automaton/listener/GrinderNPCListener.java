@@ -6,6 +6,7 @@ import me.kei.citizens.automaton.npc.AutomatonNPC;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -35,6 +36,7 @@ public class GrinderNPCListener implements Listener {
                     npc.data().set("base_y", e.getClickedBlock().getLocation().getY() + 1);
                     npc.data().set("base_z", e.getClickedBlock().getLocation().getZ() + .5);
                     skin(npc, p.getName());
+                    setHP(npc);
                     npc.spawn(e.getClickedBlock().getLocation().add(0.5, 1.5, 0.5));
                 }
             }
@@ -61,5 +63,9 @@ public class GrinderNPCListener implements Listener {
         String skinName = name;
         npc.data().set(NPC.PLAYER_SKIN_UUID_METADATA, name);
         npc.data().set(NPC.PLAYER_SKIN_USE_LATEST, false);
+    }
+
+    public void setHP(NPC npc){
+        npc.setProtected(false);
     }
 }

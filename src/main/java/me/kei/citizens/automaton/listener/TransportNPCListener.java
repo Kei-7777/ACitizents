@@ -10,6 +10,7 @@ import net.citizensnpcs.util.NMS;
 import net.minecraft.server.v1_15_R1.EntityPlayer;
 import org.bukkit.*;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.PufferFish;
 import org.bukkit.event.EventHandler;
@@ -43,6 +44,7 @@ public class TransportNPCListener implements Listener {
                     npc.data().set("base_y", e.getClickedBlock().getLocation().getY() + 1);
                     npc.data().set("base_z", e.getClickedBlock().getLocation().getZ() + .5);
                     skin(npc, p.getName());
+                    setHP(npc);
                     npc.spawn(e.getClickedBlock().getLocation().add(0.5, 1.5, 0.5));
                 }
             }
@@ -69,5 +71,9 @@ public class TransportNPCListener implements Listener {
         String skinName = name;
         npc.data().set(NPC.PLAYER_SKIN_UUID_METADATA, name);
         npc.data().set(NPC.PLAYER_SKIN_USE_LATEST, false);
+    }
+
+    public void setHP(NPC npc){
+        npc.setProtected(false);
     }
 }

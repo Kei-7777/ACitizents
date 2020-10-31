@@ -13,6 +13,7 @@ public class CobbleMinerNPCRunningTask extends BukkitRunnable {
 
     String dataString = AutomatonNPC.COBBLEMINER.id;
     String name = AutomatonNPC.COBBLEMINER.npcdisplay;
+
     public CobbleMinerNPCRunningTask(AutomatonCitizens automatonCitizens) {
         CobbleMiner.reset();
     }

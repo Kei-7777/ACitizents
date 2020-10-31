@@ -9,11 +9,13 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Dropper;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -48,6 +50,7 @@ public class TreeNPCListener implements Listener {
                     npc.data().set("base_y", e.getClickedBlock().getLocation().getY() + 1);
                     npc.data().set("base_z", e.getClickedBlock().getLocation().getZ() + .5);
                     skin(npc, p.getName());
+                    setHP(npc);
                     npc.spawn(e.getClickedBlock().getLocation().add(0.5, 1.5, 0.5));
                 } else if(e.getClickedBlock() != null && e.getClickedBlock().getType() == Material.DROPPER){
                     if(e.getItem() == null) return;
@@ -134,9 +137,25 @@ public class TreeNPCListener implements Listener {
         }
     }
 
+    @EventHandler
+    public void onDispense(BlockDispenseEvent e){
+        if(e.getBlock().getType() == Material.DROPPER){
+            Dropper dropper = (Dropper) e.getBlock().getState();
+            if(dropper.getCustomName() != null && dropper.getCustomName().startsWith(title)){
+                e.setCancelled(true);
+            }
+        }
+    }
+
+
+
     public void skin(NPC npc, String name) {
         String skinName = name;
         npc.data().set(NPC.PLAYER_SKIN_UUID_METADATA, name);
         npc.data().set(NPC.PLAYER_SKIN_USE_LATEST, false);
+    }
+
+    public void setHP(NPC npc){
+        npc.setProtected(false);
     }
 }

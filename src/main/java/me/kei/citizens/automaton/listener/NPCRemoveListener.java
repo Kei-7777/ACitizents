@@ -6,6 +6,7 @@ import me.kei.citizens.automaton.npc.AutomatonNPC;
 import me.kei.citizens.automaton.tasks.CobbleMiner;
 import me.kei.citizens.automaton.tasks.cobbleminer.CheckEquipment;
 import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.event.NPCDeathEvent;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -55,5 +56,11 @@ public class NPCRemoveListener implements Listener {
                 }
             }
         }
+    }
+
+    @EventHandler
+    public void onDeath(NPCDeathEvent e){
+        if (e.getNPC().data().has("npctype"))
+        e.getNPC().destroy();
     }
 }

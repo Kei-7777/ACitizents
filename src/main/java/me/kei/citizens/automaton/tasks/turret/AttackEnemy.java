@@ -34,7 +34,8 @@ public class AttackEnemy extends Turret {
                     EntityType.SILVERFISH,
                     EntityType.ENDERMAN,
                     EntityType.ENDERMITE,
-                    EntityType.BLAZE
+                    EntityType.BLAZE,
+                    EntityType.CREEPER
             );
     
     @Override

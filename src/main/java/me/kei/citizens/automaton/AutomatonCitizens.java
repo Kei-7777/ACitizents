@@ -67,7 +67,6 @@ public class AutomatonCitizens extends JavaPlugin {
         File f = new File(this.getDataFolder() + File.separator + "data.yml");
         if(!f.exists()){
             try {
-                f.mkdirs();
                 f.createNewFile();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -76,13 +75,19 @@ public class AutomatonCitizens extends JavaPlugin {
         YamlConfiguration cfg = YamlConfiguration.loadConfiguration(f);
         for (Iterator i = CitizensAPI.getNPCRegistry().iterator(); i.hasNext(); ) {
             NPC npc = (NPC) i.next();
-            if (npc.data().has("npctype")) {
-                cfg.set(npc.getId() + ".owner", npc.data().get("owner").toString());
-                cfg.set(npc.getId() + ".state", npc.data().get("state"));
-                cfg.set(npc.getId() + ".npctype", npc.data().get("npctype").toString());
-                cfg.set(npc.getId() + ".base_x", npc.data().get("base_x"));
-                cfg.set(npc.getId() + ".base_y", npc.data().get("base_y"));
-                cfg.set(npc.getId() + ".base_z", npc.data().get("base_z"));
+            try {
+                if (!npc.getEntity().isDead()) {
+                    if (npc.data().has("npctype")) {
+                        cfg.set(npc.getId() + ".owner", npc.data().get("owner").toString());
+                        cfg.set(npc.getId() + ".state", npc.data().get("state"));
+                        cfg.set(npc.getId() + ".npctype", npc.data().get("npctype").toString());
+                        cfg.set(npc.getId() + ".base_x", npc.data().get("base_x"));
+                        cfg.set(npc.getId() + ".base_y", npc.data().get("base_y"));
+                        cfg.set(npc.getId() + ".base_z", npc.data().get("base_z"));
+                    }
+                }
+            }catch (NullPointerException ex){
+                //threw
             }
         }
         try {
